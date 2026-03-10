@@ -17,7 +17,9 @@ public class Fishermen : ModuleRules
             new string[]
             {
                 "CoreUObject",
-                "Engine"
+                "Engine",
+                "EnhancedInput",
+                "InputCore",
             }
         );
     }

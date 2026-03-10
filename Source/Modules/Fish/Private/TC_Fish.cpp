@@ -19,6 +19,11 @@ ATC_Fish::ATC_Fish()
 	WeatherType = ETC_WeatherType::Clear;
 	SeasonType = ETC_SeasonType::Spring;
 	FishingAreaType = ETC_FishingAreaType::Pond;
+
+	mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FishMesh"));
+	mesh->SetupAttachment(RootComponent);
+	mesh->bCastDynamicShadow = false;
+	mesh->bCastStaticShadow = false;
 }
 
 void ATC_Fish::OnConstruction(const FTransform& Transform)

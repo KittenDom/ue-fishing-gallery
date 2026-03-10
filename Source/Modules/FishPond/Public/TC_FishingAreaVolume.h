@@ -12,8 +12,12 @@ class FISHPOND_API ATC_FishingAreaVolume : public AActor
 
 public:
 	ATC_FishingAreaVolume();
+	
+public:
+	void InitializeFishingSpot();
 
 	bool ContainsLocation(const FVector& WorldLocation) const;
+	bool IsInitialized() const;
 
 private:
 	UFUNCTION()
@@ -31,4 +35,7 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Fishing Area|Spawning", meta=(AllowPrivateAccess=true))
 	TArray<FTC_FishingAreaSpawnConfig> AreaSpawnConfigs;
+	
+	UPROPERTY()
+	bool bIsInitialized = false;
 };

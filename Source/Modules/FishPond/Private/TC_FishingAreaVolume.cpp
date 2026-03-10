@@ -17,29 +17,17 @@ ATC_FishingAreaVolume::ATC_FishingAreaVolume()
 	AreaBounds->SetCollisionResponseToAllChannels(ECR_Ignore);
 	AreaBounds->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	AreaBounds->SetGenerateOverlapEvents(true);
-	AreaBounds->OnComponentBeginOverlap.AddDynamic(this, &ATC_FishingAreaVolume::HandleAreaBeginOverlap);
+	// AreaBounds->OnComponentBeginOverlap.AddDynamic(this, &ATC_FishingAreaVolume::HandleAreaBeginOverlap);
 }
 
-bool ATC_FishingAreaVolume::ContainsLocation(const FVector& WorldLocation) const
+void ATC_FishingAreaVolume::InitializeFishingSpot()
 {
-	return AreaBounds->Bounds.GetBox().IsInsideOrOn(WorldLocation);
-}
-
-void ATC_FishingAreaVolume::HandleAreaBeginOverlap(
-	UPrimitiveComponent* OverlappedComponent,
-	AActor* OtherActor,
-	UPrimitiveComponent* OtherComp,
-	int32 OtherBodyIndex,
-	bool bFromSweep,
-	const FHitResult& SweepResult)
-{
-	const APawn* OverlappingPawn = Cast<APawn>(OtherActor);
-	if (!IsValid(OverlappingPawn) || !OverlappingPawn->IsPlayerControlled())
+	if (bIsInitialized)
 	{
 		return;
 	}
 
-	UWorld* World = GetWorld();
+	const UWorld* World = GetWorld();
 	if (!IsValid(World))
 	{
 		return;
@@ -67,4 +55,31 @@ void ATC_FishingAreaVolume::HandleAreaBeginOverlap(
 
 	FishPoolingSystem->EnsurePoolInitialized();
 	FishPoolingSystem->SetupActiveFishForArea(SpawnRequests, AreaBounds->Bounds.GetBox());
+
+	bIsInitialized = true;
+}
+
+bool ATC_FishingAreaVolume::ContainsLocation(const FVector& WorldLocation) const
+{
+	return AreaBounds->Bounds.GetBox().IsInsideOrOn(WorldLocation);
+}
+
+bool ATC_FishingAreaVolume::IsInitialized() const
+{
+	return bIsInitialized;
+}
+
+void ATC_FishingAreaVolume::HandleAreaBeginOverlap(
+	UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex,
+	bool bFromSweep,
+	const FHitResult& SweepResult)
+{
+	const APawn* OverlappingPawn = Cast<APawn>(OtherActor);
+	if (!IsValid(OverlappingPawn) || !OverlappingPawn->IsPlayerControlled())
+	{
+		return;
+	}
 }

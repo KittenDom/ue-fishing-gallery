@@ -20,12 +20,16 @@ protected:
 
 private:
 	void ApplyDataFromRow();
-
+	
+private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Fish|Data", meta=(AllowPrivateAccess=true))
 	FDataTableRowHandle FishDataRow;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fish", meta=(AllowPrivateAccess=true))
 	class USceneComponent* RootSceneComponent;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Fish", meta=(AllowPrivateAccess=true))
+	UStaticMeshComponent* mesh = nullptr;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fish", meta=(AllowPrivateAccess=true))
 	FName FishType;
